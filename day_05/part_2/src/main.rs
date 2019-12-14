@@ -56,6 +56,52 @@ fn execute_program(program: &mut [i32]) -> io::Result<()> {
                 pc += 1;
                 println!("{}", arg1);
             }
+            5 => {
+                let (mode1, mode2) = (get_digit(opcode_number, 2), get_digit(opcode_number, 3));
+
+                let arg1 = get_arg(program, pc, mode1);
+                pc += 1;
+                let arg2 = get_arg(program, pc, mode2);
+                pc += 1;
+                if arg1 != 0 {
+                    pc = arg2 as usize;
+                }
+            }
+            6 => {
+                let (mode1, mode2) = (get_digit(opcode_number, 2), get_digit(opcode_number, 3));
+
+                let arg1 = get_arg(program, pc, mode1);
+                pc += 1;
+                let arg2 = get_arg(program, pc, mode2);
+                pc += 1;
+                if arg1 == 0 {
+                    pc = arg2 as usize;
+                }
+            }
+            7 => {
+                let (mode1, mode2) = (get_digit(opcode_number, 2), get_digit(opcode_number, 3));
+
+                let arg1 = get_arg(program, pc, mode1);
+                pc += 1;
+                let arg2 = get_arg(program, pc, mode2);
+                pc += 1;
+                let arg3 = get_arg(program, pc, 1);
+                pc += 1;
+                let value = if arg1 < arg2 { 1 } else { 0 };
+                program[arg3 as usize] = value;
+            }
+            8 => {
+                let (mode1, mode2) = (get_digit(opcode_number, 2), get_digit(opcode_number, 3));
+
+                let arg1 = get_arg(program, pc, mode1);
+                pc += 1;
+                let arg2 = get_arg(program, pc, mode2);
+                pc += 1;
+                let arg3 = get_arg(program, pc, 1);
+                pc += 1;
+                let value = if arg1 == arg2 { 1 } else { 0 };
+                program[arg3 as usize] = value;
+            }
             99 => break,
             _ => panic!("unknown opcode: {}", opcode),
         }
